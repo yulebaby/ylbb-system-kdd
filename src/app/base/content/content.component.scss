@@ -1,0 +1,10 @@
+.ui-content{
+  height: 100%;
+  min-height: 500px;
+  overflow: auto;
+
+  & > div {
+    margin: 24px 24px 0;
+    position: relative;
+  }
+}

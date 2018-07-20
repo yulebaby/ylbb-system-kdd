@@ -1,0 +1,79 @@
+<div class="ui-header">
+
+  <div class="ui-menu-collapsed" (click)="TapIsCollapsed()">
+    <i class="anticon" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed"></i>
+  </div>
+
+  <div class="ui-user-info">
+
+    <div class="router-search">
+      <nz-input-group [nzSuffix]="suffixIconButton">
+        <input id="search" placeholder="站内搜索" (keyup.enter)="keyupEnter()" nz-input [(ngModel)]="searchValue" (ngModelChange)="onChange($event)" [nzAutocomplete]="auto"
+        />
+        <div class="input-cover"></div>
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <label for="search"><i class="anticon anticon-search"></i></label>
+      </ng-template>
+      <nz-autocomplete #auto>
+        <ng-container *ngFor="let group of autoComplateOptions">
+          <ng-container *ngIf="group.isLeaf">
+            <nz-auto-optgroup [nzLabel]="groupTitle">
+              <ng-template #groupTitle>
+                <span>{{ group.title }}</span>
+              </ng-template>
+              <nz-auto-option [nzLabel]="group.title" [nzValue]="group">
+                <p class="search-item" (click)="keyupEnter(group)">
+                  {{ group.title }}
+                  <span>{{ group.key.split('/')[group.key.split('/').length -1] }}</span>
+                </p>
+              </nz-auto-option>
+            </nz-auto-optgroup>
+          </ng-container>
+          <ng-container *ngIf="!group.isLeaf">
+            <nz-auto-optgroup [nzLabel]="groupTitle">
+              <ng-template #groupTitle>
+                <span>{{ group.title }}</span>
+              </ng-template>
+              <nz-auto-option *ngFor="let option of group.children" [nzLabel]="option.title" [nzValue]="option">
+                <p class="search-item" (click)="keyupEnter(option)">
+                  {{ option.title }}
+                  <span>{{ option.key.split('/')[option.key.split('/').length -1] }}</span>
+                </p>
+              </nz-auto-option>
+            </nz-auto-optgroup>
+          </ng-container>
+        </ng-container>
+      </nz-autocomplete>
+    </div>
+
+    <nz-tooltip [nzTitle]="'使用帮助'" [nzPlacement]="'bottom'">
+      <div nz-tooltip class="changelog" routerLink="/system/changelog">
+        <i class="anticon anticon-question-circle-o"></i>
+      </div>
+    </nz-tooltip>
+
+    <nz-dropdown nzPlacement="bottomRight">
+      <div class="ant-dropdown-link" nz-dropdown>
+        <nz-avatar nzIcon="user" nzSize="small" style="vertical-align: middle" nzSrc="./assets/images/default-boy.png"></nz-avatar>
+        <span>{{ userInfo.name }}</span>
+      </div>
+      <ul class="ant-dropdown-cell" nz-menu [style.width]="'140px'">
+        <li nz-menu-item>
+          <a href="javascript:;" style="background: #fff; cursor: no-drop; color: #ccc;">
+            <i class="anticon anticon-user"></i>个人中心</a>
+        </li>
+        <li nz-menu-item>
+          <a href="javascript:;" style="background: #fff; cursor: no-drop; color: #ccc;">
+            <i class="anticon anticon-setting"></i>设置</a>
+        </li>
+        <li nz-menu-item>
+          <a href="javascript:;" style="border-top: solid 1px #e8e8e8" (click)="signOut()">
+            <i class="anticon anticon-logout"></i>退出登录</a>
+        </li>
+      </ul>
+    </nz-dropdown>
+
+  </div>
+
+</div>

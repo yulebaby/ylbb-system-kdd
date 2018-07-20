@@ -1,0 +1,7 @@
+<ea-query #EaQuery [node]="queryNode" (onSubmit)="EaTable.request($event)" [EaQueryBtns]="EaQueryBtns"></ea-query>
+
+<ng-container *ngTemplateOutlet="EaBtns"></ng-container>
+
+<ea-table #EaTable [thead]="tableThead" [paramsDefault]="paramsDefault" [EaTableTbodyTr]="EaTableTbodyTr" [checked]="checked" (checkedItems)="checkedChange($event)"
+  [allowSpace]="allowSpace" [url]="url">
+</ea-table>
