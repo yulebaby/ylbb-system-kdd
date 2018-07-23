@@ -27,11 +27,7 @@ export class NoopInterceptor implements HttpInterceptor {
      *    允许跨域存取cookies
      */
     if (req.method === 'POST') {
-      req = req.clone({
-        body: serialize(req.body),
-        setHeaders: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-        withCredentials: true
-      })
+      
     } else if (req.method === 'PUT') {
       let formData = new FormData();
       for (let key of req.body) {

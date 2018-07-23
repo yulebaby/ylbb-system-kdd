@@ -1,0 +1,91 @@
+<form nz-form [formGroup]="formModel">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="secondName">宝宝昵称</nz-form-label>
+    <nz-form-control [nzSpan]="16">
+      <input nz-input type="text" id="secondName" formControlName="secondName" placeholder="请输入宝宝昵称">
+      <nz-form-explain *ngIf="formModel.get('secondName').dirty && formModel.get('secondName').errors">请输入宝宝昵称</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">宝宝生日</nz-form-label>
+    <nz-form-control [nzSpan]="16">
+      <nz-date-picker formControlName="birthday" (ngModelChange)="birthdayChange($event)" [nzDisabledDate]="disabledStartDate" nzPlaceHolder="请选择宝宝生日" nzFormat="yyyy-MM-dd"></nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">选择门店方式</nz-form-label>
+    <nz-form-control [nzSpan]="16">
+      <nz-radio-group formControlName="selectType" style="width: 100%; display: flex;">
+        <label nz-radio-button [nzValue]="0" style="flex: 1">通过省市区选门店</label>
+        <label nz-radio-button [nzValue]="1" style="flex: 1">通过搜索选门店</label>
+      </nz-radio-group>
+    </nz-form-control>
+  </nz-form-item>
+  <div style="height: 64px;">
+  <nz-form-item *ngIf="formModel.get('selectType').value == 0">
+    <nz-form-label [nzSpan]="6">省市区</nz-form-label>
+    <nz-form-control [nzSpan]="16">
+      <nz-cascader [nzOptions]="addressItems" formControlName="address" nzPlaceHolder="请选择省市区"></nz-cascader>
+    </nz-form-control>
+  </nz-form-item>
+  </div>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">所属门店</nz-form-label>
+    <nz-form-control [nzSpan]="16">
+      <nz-select formControlName="shopId" nzShowSearch nzAllowClear nzPlaceHolder="请选择所属门店" [nzDisabled]="!formModel.get('address').value || !formModel.get('address').value.length">
+        <nz-option 
+          *ngFor="let option of shopItems" 
+          [nzLabel]="option.shopName" 
+          [nzValue]="option.id" 
+          [nzCustomContent]="formModel.get('selectType').value != 0">
+          <div>{{ option.shopName }} <span style="float: right; color: rgba(0, 0, 0, .4); font-size: 12px">{{ (option.distance/1000).toFixed(2) }}km</span></div>
+        </nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">预约时间</nz-form-label>
+    <nz-form-control [nzSpan]="16">
+      <nz-input-group nzCompact>
+        <nz-date-picker formControlName="reserveDate" [nzDisabled]="!formModel.get('birthday').value || !formModel.get('shopId').value" [nzDisabledDate]="disabledEndDate" nzPlaceHolder="请选择预约日期" nzFormat="yyyy-MM-dd" style="width: 50%;"></nz-date-picker>
+        <nz-select formControlName="precontract" [nzDisabled]="!formModel.get('birthday').value || !formModel.get('shopId').value" nzShowSearch nzAllowClear nzPlaceHolder="请选择预约时间段" style="width: 50%;">
+          <nz-option *ngFor="let option of precontractItems" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="visitInfo">跟踪记录</nz-form-label>
+    <nz-form-control [nzSpan]="16">
+      <textarea nz-input formControlName="visitInfo" id="visitInfo" placeholder="请输入跟踪记录"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="remark">备注信息</nz-form-label>
+    <nz-form-control [nzSpan]="16">
+      <textarea nz-input formControlName="remark" id="remark" placeholder="请输入备注信息"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+<div class="select" *ngIf="formModel.get('selectType').value != 0">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">输入地址选择门店</nz-form-label>
+    <nz-form-control [nzSpan]="16">
+      <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+        <input type="text" nz-input (keyup)="addressChange($event.target.value)" [(ngModel)]="inputValue"  (keyup.enter)="searchShop()" placeholder="请输入地址选择门店" #address
+          [nzAutocomplete]="auto">
+      </nz-input-group>
+      <nz-autocomplete #auto>
+        <nz-auto-option *ngFor="let option of search$ | async" [nzLabel]="option.name" [nzValue]="option">
+          {{option.name}}
+          <span style="font-size: 12px; color: rgba(0, 0, 0, .4)">{{option.address}}</span>
+        </nz-auto-option>
+      </nz-autocomplete>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch (click)="searchShop()">
+          <i class="anticon anticon-search"></i>
+        </button>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+</div>

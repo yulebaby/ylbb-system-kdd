@@ -1,4 +1,3 @@
-import { AuthGuardService } from '../ng-relax/services/auth-guard.service';
 import { UserInfoResolver } from './userInfo-resolver.service';
 import { BaseComponent } from '../base/base.component';
 import { NgModule } from '@angular/core';
@@ -20,7 +19,11 @@ const routes: Routes = [
     component: BaseComponent,
     resolve: { userInfo: UserInfoResolver },
     children: [
-      
+      {
+        path: 'customer',
+        data: { title: '客户管理' },
+        loadChildren: 'src/app/modules/customer/customer.module#CustomerModule'
+      }
     ]
   },
   {

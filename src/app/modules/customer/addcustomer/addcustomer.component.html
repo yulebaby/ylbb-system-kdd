@@ -1,0 +1,55 @@
+<form nz-form [formGroup]="formModel">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="secondName">宝宝昵称</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input nz-input type="text" formControlName="secondName" id="secondName" placeholder="请输入宝宝昵称">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="parentPhone" [nzRequired]="true">家长电话</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input nz-input type="text" formControlName="parentPhone" id="parentPhone" placeholder="请输入家长电话">
+      <nz-form-explain *ngIf="formModel.get('parentPhone').dirty && formModel.get('parentPhone').errors || formModel.get('parentPhone').pending">
+        <ng-container *ngIf="formModel.get('parentPhone').hasError('required') || formModel.get('parentPhone').hasError('pattern')">
+          请输入正确的家长电话!
+        </ng-container>
+        <ng-container *ngIf="formModel.get('parentPhone').hasError('duplicated')">
+          该电话号码已存在!
+        </ng-container>
+        <ng-container *ngIf="formModel.get('parentPhone').pending">
+           请稍等，验证中...
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">省市区</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-cascader [nzOptions]="addressItems" formControlName="address" (ngModelChange)="addressChanges($event)" nzPlaceHolder="请选择省市区"></nz-cascader>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">所属门店</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-select formControlName="shopId" nzShowSearch nzAllowClear nzPlaceHolder="请选择所属门店">
+        <nz-option *ngFor="let option of shopItems" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="activityPrice">活动价格</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input nz-input type="text" formControlName="activityPrice" id="activityPrice" placeholder="请输入活动价格">
+      <nz-form-explain *ngIf="formModel.get('activityPrice').dirty && formModel.get('activityPrice').errors">请输入正确的活动价格</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" [nzRequired]="true">推广渠道</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-select formControlName="customerSpreadRelationId" nzShowSearch nzAllowClear nzPlaceHolder="请选择推广渠道">
+        <nz-option *ngFor="let option of sourceItems" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+      <nz-form-explain *ngIf="formModel.get('customerSpreadRelationId').dirty && formModel.get('customerSpreadRelationId').errors">请选择推广渠道</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+</form>

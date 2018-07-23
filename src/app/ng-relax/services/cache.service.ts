@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
@@ -69,7 +69,9 @@ export class CacheService {
    * @author phuhoang
    */
   private _asyncData(observer, key, params) {
-    this.http.post<any>(key, params).subscribe(res => {
+    this.http.post<any>(key, params, {
+      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+    }).subscribe(res => {
       if (res.code == 1000) { this.set(key, res.result); }
       let result = res.code == 1000 ? res.result : null;
       observer.next(result);

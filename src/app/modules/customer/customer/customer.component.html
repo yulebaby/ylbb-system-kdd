@@ -1,0 +1,73 @@
+<div class="container">
+  <ea-query [node]="queryNode" (onSubmit)="EaTable.request($event)"></ea-query>
+  
+  <div class="list-buttons">
+    <button nz-button nzType="primary" style="margin-right: 8px;" (click)="addCustomerInfo()">
+      <i class="anticon anticon-plus"></i>
+      <span>新增客户信息</span>
+    </button>
+    <button nz-button nzType="primary" style="margin-right: 8px;" (click)="excelFile.click()">
+      <i class="anticon anticon-upload"></i>
+      上传批量EXCEL模版
+    </button>
+    <input type="file" [style.display]="'none'" id="upExcel" #excelFile (change)="upExcel(excelFile)">
+    <a href="https://ylbb-system.oss-cn-beijing.aliyuncs.com/keduoduo/%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E6%A8%A1%E6%9D%BF.xlsx" target="_blank" download="批量添加EXCEL模板.xlsx">
+      <button nz-button nzType="primary" style="vertical-align: bottom">
+        <i class="anticon anticon-download"></i>
+        <span>下载批量添加模版</span>
+      </button>
+    </a>
+  </div>
+
+  <ea-table #EaTable [thead]="tableNode" [EaTableTbodyTr]="EaTableTbodyTr"
+    [allowSpace]="false" url="/customerDetail/selectAllCustomerDetailList">
+    <ng-template let-data #EaTableTbodyTr>
+      <td nzWidth="100px" nzLeft="0"><a href="javascript:;" [getMobile]="data.id">查看</a></td>
+      <td>{{ data.secondName }}</td>
+      <td>{{ data.customerSpreadRelationName }}</td>
+      <td>{{ data.babyAwardCodeCount }}</td>
+      <td>{{ data.province ? data.province + data.city + data.area : '--' }}</td>
+      <td>{{ data.shopName || '--' }}</td>
+      <td>{{ data.createTime }}</td>
+      <td>
+        <nz-tag [nzColor]="
+                    data.stage == 0 ? 'pink' : 
+                    data.stage == 1 ? 'red' : 
+                    data.stage == 2 ? 'orange' : 
+                    data.stage == 3 ? 'green' : 
+                    data.stage == 4 ? 'cyan' : 
+                    data.stage == 5 ? 'blue' : 'purple'">{{data.stage == 0 ? '新用户' : data.stage == 1 ? '首次跟踪' : data.stage == 2 ? '二次跟踪' : data.stage == 3 ? '已预约' : data.stage ==
+          4 ? '已分配' : data.stage == 5 ? '已体验' : '已办卡'}}</nz-tag>
+      </td>
+      <td>{{ (data.precontractDate || '-') + ' ' + (data.precontractTime || '-') }}</td>
+      <td nzWidth="100px" nzRight="0">
+        <a href="javascript: void(0);" (click)="record(data)">记录</a>
+      </td>
+    </ng-template>
+  </ea-table>
+</div>
+
+<ng-template #tplContent>
+  <nz-table #basicTable [nzData]="failItems">
+    <thead>
+      <tr>
+        <th>宝宝昵称</th>
+        <th>家长电话</th>
+        <th>所属门店</th>
+        <th>活动价格</th>
+        <th>推广渠道</th>
+        <th>失败原因</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{data.secondName}}</td>
+        <td>{{data.parentPhone}}</td>
+        <td>{{data.shopName}}</td>
+        <td>{{data.activityPrice}}</td>
+        <td>{{data.customerSpreadRelationName}}</td>
+        <td>{{data.errCause}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</ng-template>
