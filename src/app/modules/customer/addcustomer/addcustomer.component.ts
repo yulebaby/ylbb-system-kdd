@@ -45,7 +45,7 @@ export class AddcustomerComponent implements OnInit {
         provinceCode: e[0],
         cityCode: e[1],
         areaCode: e[2]
-      }).then(res => {
+      }, false).then(res => {
         if (res.code == 1000 && res.result.length) {
           this.shopItems = res.result;
         } else {

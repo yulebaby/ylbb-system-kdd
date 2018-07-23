@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { QueryNode } from 'src/app/ng-relax/components/query/query.component';
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+import { TableComponent } from '../../../ng-relax/components/table/table.component';
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
@@ -99,6 +100,7 @@ export class CustomerComponent implements OnInit {
       formData.set('filename', file);
       this.httpClient.post(`/batchImport/batchImportUserKnowledge`, formData).subscribe(res => {
         this.message.remove(message);
+        this.EaTable._request();
         if (res['code'] == 1000) {
           this.message.success('批量导入用户信息成功');
         } else {
@@ -114,7 +116,9 @@ export class CustomerComponent implements OnInit {
     }
   }
 
+  @ViewChild('EaTable') EaTable: TableComponent;
   addCustomerInfo() {
+    let _this_ = this;
     const modal = this.modal.create({
       nzTitle: '新增客户',
       nzContent: AddcustomerComponent,
@@ -132,6 +136,7 @@ export class CustomerComponent implements OnInit {
           componentInstance.submit().then(res => {
             modal.close();
             this.loading = false;
+            _this_.EaTable._request();
           }, err => {
             this.loading = false;
           })
@@ -141,8 +146,9 @@ export class CustomerComponent implements OnInit {
   }
 
   record(data) {
+    let _this_ = this;
     const modal = this.modal.create({
-      nzTitle: '新增客户',
+      nzTitle: '修改客户',
       nzContent: RecordComponent,
       nzComponentParams: { userInfo: data },
       nzFooter: [{
@@ -159,6 +165,7 @@ export class CustomerComponent implements OnInit {
           componentInstance.submit().then(res => {
             modal.close();
             this.loading = false;
+            _this_.EaTable._request();
           }, err => {
             this.loading = false;
           })

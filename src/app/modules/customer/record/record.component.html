@@ -3,7 +3,6 @@
     <nz-form-label [nzSpan]="6" nzFor="secondName">宝宝昵称</nz-form-label>
     <nz-form-control [nzSpan]="16">
       <input nz-input type="text" id="secondName" formControlName="secondName" placeholder="请输入宝宝昵称">
-      <nz-form-explain *ngIf="formModel.get('secondName').dirty && formModel.get('secondName').errors">请输入宝宝昵称</nz-form-explain>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
@@ -49,7 +48,7 @@
       <nz-input-group nzCompact>
         <nz-date-picker formControlName="reserveDate" [nzDisabled]="!formModel.get('birthday').value || !formModel.get('shopId').value" [nzDisabledDate]="disabledEndDate" nzPlaceHolder="请选择预约日期" nzFormat="yyyy-MM-dd" style="width: 50%;"></nz-date-picker>
         <nz-select formControlName="precontract" [nzDisabled]="!formModel.get('birthday').value || !formModel.get('shopId').value" nzShowSearch nzAllowClear nzPlaceHolder="请选择预约时间段" style="width: 50%;">
-          <nz-option *ngFor="let option of precontractItems" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          <nz-option *ngFor="let option of precontractItems" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.status"></nz-option>
         </nz-select>
       </nz-input-group>
     </nz-form-control>

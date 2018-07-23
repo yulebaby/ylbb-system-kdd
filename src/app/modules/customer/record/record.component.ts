@@ -15,6 +15,8 @@ import { Observable, Subject } from 'rxjs';
 })
 export class RecordComponent implements OnInit {
 
+  erpDomain = 'http://192.168.1.207:8080';
+
   @Input() userInfo;
 
   formModel: FormGroup;
@@ -49,7 +51,7 @@ export class RecordComponent implements OnInit {
     /* ------------------------- 预约日期改变,置空时间段 ------------------------- */
     this.formModel.get('reserveDate').valueChanges.subscribe(res => {
       if (res) {
-        this.http.post(`http://192.168.1.207:8080/reserve/listHoursForKedd`, {
+        this.http.post(this.erpDomain + `/reserve/listHoursForKedd`, {
           paramJson: JSON.stringify({
             date: this.format.transform(res, 'yyyy-MM-dd'),
             storeId: this.formModel.get('shopId').value,
@@ -58,12 +60,12 @@ export class RecordComponent implements OnInit {
         }, false).then(res => {
           if (res.code == 1000) {
             let options = res.result.list.map(res => {
-              res = { precontractTime: `${res.hour}:${res.minute}`, precontractId: `${res.hour}:${res.minute}`, status: res.flag != 'true' };
+              res = { label: `${res.hour}:${res.minute}`, value: `${res.hour}:${res.minute}`, status: res.flag != 'true' };
               return res;
             });
             this.precontractItems = options;
           } else {
-            this.precontractItems = [{ precontractTime: '没有可预约时间', precontractId: -1 }]
+            this.precontractItems = [{ label: '没有可预约时间', value: -1 }]
           }
         })
       }
@@ -117,28 +119,37 @@ export class RecordComponent implements OnInit {
 
   submit(): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (this.formModel.valid) {
-        const params = JSON.parse(JSON.stringify(this.formModel.value));
-        params.reserveDate = this.format.transform(this.formModel.get('reserveDate').value, 'yyyy-MM-dd');
-        params.birthday = this.format.transform(this.formModel.get('birthday').value, 'yyyy-MM-dd');
-        params.reserveHour = params.precontractId ? params.precontractId.split(':')[0] : '';
-        params.reserveMinute = params.precontractId ? params.precontractId.split(':')[1] : '';
-        params.province = params.address ? params.address[0] : '';
-        params.city = params.address ? params.address[1] : '';
-        params.area = params.address ? params.address[2] : '';
-        params.customerBabyId = this.userInfo.customerBabyId;
-        params.id = this.userInfo.id;
-        for (let i in params) {
-          params[i] === null && delete params[i];
-        }
-        this.http.post('/customerDetail/updateCustomerPrecontractInfo', params).then(res => resolve(true), err => reject(false))
-      } else {
-        for (let i in this.formModel.controls) {
-          this.formModel.controls[i].markAsDirty();
-          this.formModel.controls[i].updateValueAndValidity();
-        }
-        reject(null);
+      const params = JSON.parse(JSON.stringify(this.formModel.value));
+      params.reserveDate = this.format.transform(this.formModel.get('reserveDate').value, 'yyyy-MM-dd');
+      params.birthday = this.format.transform(this.formModel.get('birthday').value, 'yyyy-MM-dd');
+      params.reserveHour = params.precontract ? params.precontract.split(':')[0] : '';
+      params.reserveMinute = params.precontract ? params.precontract.split(':')[1] : '';
+      params.province = params.address ? params.address[0] : '';
+      params.city = params.address ? params.address[1] : '';
+      params.area = params.address ? params.address[2] : '';
+      params.customerBabyId = this.userInfo.customerBabyId;
+      params.id = this.userInfo.id;
+      for (let i in params) {
+        params[i] === null && delete params[i];
       }
+      if (params.precontract) {
+        this.http.post('/customerDetail/findByParentPhone', { customerBabyId: this.userInfo.id }, false).then(res => {
+          if (res.code == 1000) {
+            this.http.post(this.erpDomain + '/reserve/kddReserveFei', {
+              paramJson: JSON.stringify({
+                birthday: params.birthday,
+                date: params.reserveDate,
+                storeId: params.shopId,
+                hour: params.reserveHour,
+                minute: params.reserveMinute,
+                userPhone: res.result,
+                nickName: params.secondName
+              })
+            })
+          }
+        });
+      }
+      this.http.post('/customerDetail/updateCustomerPrecontractInfo', params).then(res => resolve(true), err => reject(false))
     })
   }
 
@@ -196,7 +207,7 @@ export class RecordComponent implements OnInit {
 
   searchShop() {
     if (typeof this.inputValue == 'object') {
-      this.httpClient.post<any>('http://192.168.1.207:8080/shop/listShopForKeduoduo', `paramJson=${JSON.stringify({ lat: this.inputValue.location.lat, lon: this.inputValue.location.lng })}`,{
+      this.httpClient.post<any>(this.erpDomain + '/shop/listShopForKeduoduo', `paramJson=${JSON.stringify({ lat: this.inputValue.location.lat, lon: this.inputValue.location.lng })}`,{
         headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
       }).subscribe(res => {
         res.code == 1000 && (this.shopItems = res.result);

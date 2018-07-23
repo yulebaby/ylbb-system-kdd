@@ -32,7 +32,7 @@
     <nz-form-label [nzSpan]="6">所属门店</nz-form-label>
     <nz-form-control [nzSpan]="14">
       <nz-select formControlName="shopId" nzShowSearch nzAllowClear nzPlaceHolder="请选择所属门店">
-        <nz-option *ngFor="let option of shopItems" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        <nz-option *ngFor="let option of shopItems" [nzLabel]="option.shopName" [nzValue]="option.id"></nz-option>
       </nz-select>
     </nz-form-control>
   </nz-form-item>
@@ -47,7 +47,7 @@
     <nz-form-label [nzSpan]="6" [nzRequired]="true">推广渠道</nz-form-label>
     <nz-form-control [nzSpan]="14">
       <nz-select formControlName="customerSpreadRelationId" nzShowSearch nzAllowClear nzPlaceHolder="请选择推广渠道">
-        <nz-option *ngFor="let option of sourceItems" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        <nz-option *ngFor="let option of sourceItems" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
       </nz-select>
       <nz-form-explain *ngIf="formModel.get('customerSpreadRelationId').dirty && formModel.get('customerSpreadRelationId').errors">请选择推广渠道</nz-form-explain>
     </nz-form-control>

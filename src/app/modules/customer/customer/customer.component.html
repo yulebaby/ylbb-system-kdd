@@ -11,7 +11,7 @@
       上传批量EXCEL模版
     </button>
     <input type="file" [style.display]="'none'" id="upExcel" #excelFile (change)="upExcel(excelFile)">
-    <a href="https://ylbb-system.oss-cn-beijing.aliyuncs.com/keduoduo/%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E6%A8%A1%E6%9D%BF.xlsx" target="_blank" download="批量添加EXCEL模板.xlsx">
+    <a href="https://ylbb-system.oss-cn-beijing.aliyuncs.com/keduoduo/%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0EXCEL%E6%A8%A1%E6%9D%BF.xlsx" target="_blank" download="批量添加EXCEL模板.xlsx">
       <button nz-button nzType="primary" style="vertical-align: bottom">
         <i class="anticon anticon-download"></i>
         <span>下载批量添加模版</span>
@@ -22,7 +22,7 @@
   <ea-table #EaTable [thead]="tableNode" [EaTableTbodyTr]="EaTableTbodyTr"
     [allowSpace]="false" url="/customerDetail/selectAllCustomerDetailList">
     <ng-template let-data #EaTableTbodyTr>
-      <td nzWidth="100px" nzLeft="0"><a href="javascript:;" [getMobile]="data.id">查看</a></td>
+      <td nzWidth="100px" nzLeft="0"><a href="javascript:;" [getMobile]="data.customerBabyId">查看</a></td>
       <td>{{ data.secondName }}</td>
       <td>{{ data.customerSpreadRelationName }}</td>
       <td>{{ data.babyAwardCodeCount }}</td>
