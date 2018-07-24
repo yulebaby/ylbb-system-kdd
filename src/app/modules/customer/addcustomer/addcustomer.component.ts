@@ -49,7 +49,7 @@ export class AddcustomerComponent implements OnInit {
         if (res.code == 1000 && res.result.length) {
           this.shopItems = res.result;
         } else {
-          this.shopItems = [{ id: null, shopName: '该城市下暂无门店' }]
+          this.shopItems = []
         }
       })
     }

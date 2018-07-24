@@ -143,7 +143,8 @@ export class RecordComponent implements OnInit {
                 hour: params.reserveHour,
                 minute: params.reserveMinute,
                 userPhone: res.result,
-                nickName: params.secondName
+                nickName: params.secondName,
+                comment: params.remark
               })
             })
           }
