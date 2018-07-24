@@ -59,7 +59,7 @@ export class AddcustomerComponent implements OnInit {
     return new Promise((resolve, reject) => {
       if (this.formModel.valid) {
         let params = this.formModel.value;
-        if (params.address.length) { 
+        if (params.address && params.address.length) { 
           params.province = params.address[0];
           params.city = params.address[1];
           params.area = params.address[2];
