@@ -13,6 +13,7 @@
   (nzPageIndexChange)="_request()">
   <thead>
     <tr>
+      <th nzShowExpand *ngIf="showExpand"></th>
       <th nz-th nzCheckbox *ngIf="checked" [style.text-align]="'center'">
         <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)"></label>
       </th>
@@ -39,8 +40,12 @@
   <tbody>
     <ng-template ngFor let-data [ngForOf]="dataSet">
       <tr>
+        <td nzShowExpand [(nzExpand)]="data.expand" *ngIf="showExpand"></td>
         <td nzShowCheckbox *ngIf="checked" [(nzChecked)]="data.checked" [nzDisabled]="data.disabled" (nzCheckedChange)="isChecked($event)"></td>
         <ng-container *ngTemplateOutlet="EaTableTbodyTr; context: { $implicit: data }"></ng-container>
+      </tr>
+      <tr [nzExpand]="data.expand">
+        <ng-container *ngTemplateOutlet="EaTableTbodyExpand; context: { $implicit: data }"></ng-container>
       </tr>
     </ng-template>
   </tbody>

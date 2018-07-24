@@ -19,7 +19,8 @@
     </a>
   </div>
 
-  <ea-table #EaTable [thead]="tableNode" [EaTableTbodyTr]="EaTableTbodyTr"
+  <ea-table #EaTable [thead]="tableNode" [EaTableTbodyTr]="EaTableTbodyTr" [EaTableTbodyExpand]="EaTableTbodyExpand"
+    [showExpand]="true"
     [allowSpace]="false" url="/customerDetail/selectAllCustomerDetailList">
     <ng-template let-data #EaTableTbodyTr>
       <td nzWidth="100px" nzLeft="0"><a href="javascript:;" [getMobile]="data.customerBabyId">查看</a></td>
@@ -43,6 +44,45 @@
       <td nzWidth="100px" nzRight="0">
         <a href="javascript: void(0);" (click)="record(data)">记录</a>
       </td>
+    </ng-template>
+    <ng-template let-data #EaTableTbodyExpand>
+      <td nz-td></td>
+      <td colspan="10">
+        <div class="expand-box">
+          <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+            <label nz-col [nzSpan]="8">宝宝类型</label>
+            <div nz-col [nzSpan]="16">{{data.babyType == 1 ? '幼儿' : data.babyType == 0 ? '婴儿' : '-'}}</div>
+          </div>
+          <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+            <label nz-col [nzSpan]="8">宝宝生日</label>
+            <div nz-col [nzSpan]="16">{{data.birthday ? data.birthday :'-'}}</div>
+          </div>
+          <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+            <label nz-col [nzSpan]="8">活动价格</label>
+            <div nz-col [nzSpan]="16">￥{{data.activityPrice}}</div>
+          </div>
+          <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+            <label nz-col [nzSpan]="8">跟踪时间</label>
+            <div nz-col [nzSpan]="16">{{data.visitTime}}</div>
+          </div>
+          <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+            <label nz-col [nzSpan]="8">跟踪记录</label>
+            <div nz-col [nzSpan]="16">
+              <nz-tooltip [nzTitle]="data.visitInfo ? data.visitInfo : '暂无'" [nzPlacement]="'top'">
+                <span nz-tooltip>{{data.visitInfo ? data.visitInfo : '--'}}</span>
+              </nz-tooltip>
+            </div>
+          </div>
+          <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+            <label nz-col [nzSpan]="8">备注</label>
+            <div nz-col [nzSpan]="16">
+              <nz-tooltip [nzTitle]="data.remark ? data.remark : '暂无'" [nzPlacement]="'top'">
+                <span nz-tooltip>{{data.remark ? data.remark : '--'}}</span>
+              </nz-tooltip>
+            </div>
+          </div>
+        </div>
+      </td>  
     </ng-template>
   </ea-table>
 </div>

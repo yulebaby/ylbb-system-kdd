@@ -24,7 +24,7 @@ export class ListPageComponent implements OnInit {
 
   @Input() checkKey: string = 'id';
 
-  @Input() expand: boolean;
+  @Input() showExpand: boolean;
 
   @Input() checked: boolean;
 
@@ -33,6 +33,8 @@ export class ListPageComponent implements OnInit {
   @Output() checkedItemsChange: EventEmitter<any[]> = new EventEmitter();
 
   @Input() EaTableTbodyTr: TemplateRef<void>;
+
+  @Input() EaTableTbodyExpand: TemplateRef<void>;
 
   @Input() EaQueryBtns: TemplateRef<void>;
   

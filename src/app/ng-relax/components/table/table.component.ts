@@ -19,7 +19,7 @@ export class TableComponent implements OnInit {
 
   @Input() checkKey     : string = 'id';
 
-  @Input() expand       : boolean;
+  @Input() showExpand   : boolean;
 
   @Input() checked      : boolean;
 
@@ -35,6 +35,15 @@ export class TableComponent implements OnInit {
   }
   get EaTableTbodyTr(): TemplateRef<void> {
     return this._EaTableTbodyTr;
+  }
+
+  private _EaTableTbodyExpand: TemplateRef<void>;
+  @Input()
+  set EaTableTbodyExpand(value: TemplateRef<void>) {
+    this._EaTableTbodyExpand = value;
+  }
+  get EaTableTbodyExpand(): TemplateRef<void> {
+    return this._EaTableTbodyExpand;
   }
 
   dataSet   : any[] = [];
