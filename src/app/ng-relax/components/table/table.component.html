@@ -37,9 +37,11 @@
   </thead>
 
   <tbody>
-    <tr *ngFor="let data of dataSet">
-      <td nzShowCheckbox *ngIf="checked" [(nzChecked)]="data.checked" [nzDisabled]="data.disabled" (nzCheckedChange)="isChecked($event)"></td>
-      <ng-container *ngTemplateOutlet="EaTableTbodyTr; context: { $implicit: data }"></ng-container>
-    </tr>
+    <ng-template ngFor let-data [ngForOf]="dataSet">
+      <tr>
+        <td nzShowCheckbox *ngIf="checked" [(nzChecked)]="data.checked" [nzDisabled]="data.disabled" (nzCheckedChange)="isChecked($event)"></td>
+        <ng-container *ngTemplateOutlet="EaTableTbodyTr; context: { $implicit: data }"></ng-container>
+      </tr>
+    </ng-template>
   </tbody>
 </nz-table>

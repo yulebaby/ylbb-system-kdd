@@ -64,6 +64,9 @@ export class AddcustomerComponent implements OnInit {
           params.city = params.address[1];
           params.area = params.address[2];
         }
+        for (let i in params) {
+          params[i] === null && delete params[i];
+        }
         this.http.post('/customerDetail/insert', params).then(res => {
           resolve(res);
         }, err => {
