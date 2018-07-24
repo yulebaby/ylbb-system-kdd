@@ -15,7 +15,8 @@ import { Observable, Subject } from 'rxjs';
 })
 export class RecordComponent implements OnInit {
 
-  erpDomain = 'http://101.200.177.83:8005/ylbb_weixin';
+  // erpDomain = 'http://101.200.177.83:8005/ylbb_weixin';
+  erpDomain = 'http://swx.beibeiyue.com/ylbb_weixin';
 
   @Input() userInfo;
 

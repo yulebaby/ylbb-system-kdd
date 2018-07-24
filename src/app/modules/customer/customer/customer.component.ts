@@ -75,7 +75,7 @@ export class CustomerComponent implements OnInit {
                   { id: 5, name: '已体验' },
                   { id: 6, name: '已办卡' }
                 ],
-      placeholder : '请选择宝宝性别',
+      placeholder : '请选择状态',
       isHide      : true
     },
   ];

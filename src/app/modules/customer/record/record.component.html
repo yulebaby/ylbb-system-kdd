@@ -31,7 +31,7 @@
   <nz-form-item>
     <nz-form-label [nzSpan]="6">所属门店</nz-form-label>
     <nz-form-control [nzSpan]="16">
-      <nz-select formControlName="shopId" nzShowSearch nzAllowClear nzPlaceHolder="请选择所属门店" [nzDisabled]="!formModel.get('address').value || !formModel.get('address').value.length">
+      <nz-select formControlName="shopId" nzShowSearch nzAllowClear nzPlaceHolder="请选择所属门店" [nzDisabled]="(!formModel.get('address').value || !formModel.get('address').value.length) && formModel.get('selectType').value == 0 ">
         <nz-option 
           *ngFor="let option of shopItems" 
           [nzLabel]="option.shopName" 
