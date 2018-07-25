@@ -74,7 +74,7 @@ export class TableComponent implements OnInit {
       if (res.code == 1000) {
         this.dataSet = res.result.list;
         this._pageInfo.pageNum = res.result.pageNum;
-        this._pageInfo.totalPage = res.result.totalPage;
+        this._pageInfo.totalPage = res.result.total;
 
         /* ------------------- 如果存在选择列表则初始数据 ------------------- */
         if (this.checkedItems) {

@@ -10,6 +10,7 @@
   [(nzPageIndex)]="_pageInfo.pageNum"
   [(nzPageSize)]="_pageInfo.pageSize"
   (nzPageSizeChange)="_request(true)"
+  [nzShowTotal]="totalTemplate"
   (nzPageIndexChange)="_request()">
   <thead>
     <tr>
@@ -50,3 +51,6 @@
     </ng-template>
   </tbody>
 </nz-table>
+<ng-template let-data #totalTemplate>
+  共 {{ data }} 条数据
+</ng-template>
