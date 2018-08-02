@@ -71,17 +71,17 @@
     <nz-form-label [nzSpan]="6">输入地址选择门店</nz-form-label>
     <nz-form-control [nzSpan]="16">
       <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
-        <input type="text" nz-input (keyup)="addressChange($event.target.value)" [(ngModel)]="inputValue"  (keyup.enter)="searchShop()" placeholder="请输入地址选择门店" #address
+        <input type="text" nz-input (keyup)="addressChange($event.target.value)" [(ngModel)]="inputValue" (keyup.enter)="searchShop()" placeholder="请输入地址选择门店" #address
           [nzAutocomplete]="auto">
       </nz-input-group>
       <nz-autocomplete #auto>
-        <nz-auto-option *ngFor="let option of search$ | async" [nzLabel]="option.name" [nzValue]="option">
+        <nz-auto-option *ngFor="let option of bdResult" [nzLabel]="option.name" [nzValue]="option">
           {{option.name}}
           <span style="font-size: 12px; color: rgba(0, 0, 0, .4)">{{option.address}}</span>
         </nz-auto-option>
       </nz-autocomplete>
       <ng-template #suffixIconButton>
-        <button nz-button nzType="primary" nzSearch (click)="searchShop()">
+        <button nz-button nzType="primary" nzSearch (click)="addressChange(address.value)">
           <i class="anticon anticon-search"></i>
         </button>
       </ng-template>
