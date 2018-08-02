@@ -252,46 +252,44 @@ export class RecordComponent implements OnInit {
       };
     }, this.allowRequest);
   }
-  bdSearch(e): Observable<any> {
-    return new Observable(observer => {
-      let callback = `__ng_jsonp__.__req${this.requestNum}.finished`;
-      this.requestNum = this.requestNum + 1;
-      let region = "北京";
-      let url = `https://api.map.baidu.com/place/v2/search?query=${e}&region=${region}&output=json&ak=7NCxWo3ADYmuEiFY8GM4SW9yxoNGSnLG&callback=${callback}`;
-      this.jsonp
-        .get(url)
-        .pipe(
-          debounceTime(500),
-          map(res => res.json())
-        )
-        .subscribe(res => {
-          observer.next(res.results || []);
-        });
-    });
-  }
 
   searchShop() {
     if (typeof this.inputValue == "object") {
-      this.httpClient
-        .post<any>(
-          this.erpDomain + "/shop/listShopForKeduoduo",
-          `paramJson=${JSON.stringify({
-            lat: this.inputValue.location.lat,
-            lon: this.inputValue.location.lng
-          })}`,
-          {
-            headers: new HttpHeaders().set(
-              "Content-Type",
-              "application/x-www-form-urlencoded; charset=UTF-8"
-            )
-          }
-        )
-        .subscribe(res => {
-          res.code == 1000 && (this.shopItems = res.result);
-        });
+      this.getSearchShopItems(this.inputValue.location);
     } else {
-      this.message.warning("请选择搜索到的地址");
+      window.jsonpLocationCallback = (value) => {
+        if (value.status == 0) {
+          this.getSearchShopItems(value.result.location);
+        }
+      }
+      let script = document.createElement("script");
+      let url = `http://api.map.baidu.com/geocoder/v2/?address=${this.inputValue}&output=json&ak=7NCxWo3ADYmuEiFY8GM4SW9yxoNGSnLG&callback=jsonpLocationCallback`;
+      script.setAttribute("src", url);
+      document.getElementsByTagName("head")[0].appendChild(script);
+      script.onload = function () {
+        script.remove();
+      };
     }
+  }
+
+  getSearchShopItems(obj) {
+    this.httpClient
+      .post<any>(
+        this.erpDomain + "/shop/listShopForKeduoduo",
+        `paramJson=${JSON.stringify({
+          lat: obj.lat,
+          lon: obj.lng
+        })}`,
+        {
+          headers: new HttpHeaders().set(
+            "Content-Type",
+            "application/x-www-form-urlencoded; charset=UTF-8"
+          )
+        }
+      )
+      .subscribe(res => {
+        res.code == 1000 && (this.shopItems = res.result);
+      });
   }
 }
 
