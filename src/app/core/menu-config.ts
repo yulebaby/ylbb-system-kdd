@@ -11,5 +11,11 @@ export const MenuConfig = [
     key   : '/home/customer',
     icon  : 'anticon-team',
     isLeaf: true
+  },
+  {
+    title : '经营分析',
+    key   : '/home/report',
+    icon  : 'anticon-bar-chart',
+    isLeaf: true
   }
 ];

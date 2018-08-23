@@ -1,0 +1,81 @@
+<div class="container">
+  <div class="query-box">
+    <form nz-form [nzLayout]="'inline'" [formGroup]="queryForm">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="2">省市区</nz-form-label>
+            <nz-form-control [nzSpan]="22">
+              <nz-input-group nzCompact>
+                <nz-select formControlName="province" nzMode="multiple" nzShowSearch nzAllowClear nzPlaceHolder="请选择省" style="width: 33.333%">
+                  <nz-option *ngFor="let option of provinceItems" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                </nz-select>
+                <nz-select formControlName="city" nzMode="multiple" nzShowSearch nzAllowClear nzPlaceHolder="请选择市" style="width: 33.333%">
+                  <nz-option *ngFor="let option of cityItems" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                </nz-select>
+                <nz-select formControlName="area" nzMode="multiple" nzShowSearch nzAllowClear nzPlaceHolder="请选择区" style="width: 33.333%">
+                  <nz-option *ngFor="let option of areaItems" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                </nz-select>
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6">所属门店</nz-form-label>
+            <nz-form-control [nzSpan]="18">
+              <nz-select formControlName="shopId" nzShowSearch nzAllowClear nzPlaceHolder="请选择所属门店">
+                <nz-option *ngFor="let option of shopItems" [nzLabel]="option.shopName" [nzValue]="option.id"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6">录入时间</nz-form-label>
+            <nz-form-control [nzSpan]="18">
+              <nz-range-picker formControlName="createTime" nzAllowClear nzFormat="yyyy-MM-dd" [nzPlaceHolder]="['开始日期', '结束日期']"></nz-range-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="16" [nzLg]="16" [nzSm]="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="3">客户来源</nz-form-label>
+            <nz-form-control [nzSpan]="21">
+              <nz-select formControlName="spreadId" nzMode="multiple" nzShowSearch nzAllowClear nzPlaceHolder="请选择客户来源">
+                <nz-option *ngFor="let option of spreadItems" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8" [nzLg]="8" [nzSm]="12" [nzXs]="24" class="hp-query-btns">
+          <nz-form-item>
+            <nz-form-control>
+              <button nz-button nzType="primary" (click)="query(table)">查询</button>
+              <button nz-button (click)="reset()" style="margin-left: 8px;">重置</button>
+              <button nz-button nzType="primary" (click)="export()" style="margin-left: 8px;">导出数据</button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="container">
+  <ea-table 
+    #table
+    url="/shopInfo/selectShopInfoList"
+    [thead]="['渠道名称', '省市区', '归属门店', '线索总数', '到店总数', '办卡总数', '办卡金额']"
+    [EaTableTbodyTr]="EaTableTbodyTr">
+    <ng-template let-data #EaTableTbodyTr>
+      <td>{{ data.spreadName }}</td>
+      <td>{{ data.provinceName + data.cityName + data.areaName }}</td>
+      <td>{{ data.shopName }}</td>
+      <td>{{ data.tatalCounts }}</td>
+      <td>{{ data.experienceCounts }}</td>
+      <td>{{ data.cardCounts }}</td>
+      <td>{{ data.cardMoney | currency:'￥' }}</td>
+    </ng-template>
+  </ea-table>
+</div>
