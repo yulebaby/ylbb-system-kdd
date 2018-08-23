@@ -16,7 +16,6 @@ declare const window: any;
   styleUrls: ["./record.component.scss"]
 })
 export class RecordComponent implements OnInit {
-  // erpDomain = 'http://101.200.177.83:8005/ylbb_weixin';
   erpDomain = "http://swx.beibeiyue.com/ylbb_weixin";
 
   @Input() userInfo;
@@ -172,7 +171,7 @@ export class RecordComponent implements OnInit {
         this.http
           .post(
             "/customerDetail/findByParentPhone",
-            { customerBabyId: this.userInfo.id },
+            { customerBabyId: this.userInfo.customerBabyId },
             false
           )
           .then(res => {
@@ -186,7 +185,8 @@ export class RecordComponent implements OnInit {
                   minute: params.reserveMinute,
                   userPhone: res.result,
                   nickName: params.secondName,
-                  comment: params.remark
+                  comment: params.remark,
+                  payMoney: typeof this.userInfo.activityPrice === 'number' ? this.userInfo.activityPrice + '' : ''
                 })
               });
             }
