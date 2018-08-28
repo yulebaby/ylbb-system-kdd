@@ -22,7 +22,7 @@ export class HttpService {
   private header = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
   post(url: string, query: object = {}, auto = true): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.http.post<YlbbResponse>(url, this.serialize(query), { headers: this.header }).subscribe(res => {
+      this.http.post<YlbbResponse>(url, serialize(query), { headers: this.header }).subscribe(res => {
         (auto && res.code) && this.message.create(res.code == 1000 ? 'success' : 'warning', res.info);
         (auto && res.code != 1000) ? reject(res) : resolve(res);
       });
@@ -37,14 +37,6 @@ export class HttpService {
         (auto && res.code != 1000) ? reject(res) : resolve(res);
       });
     })
-  }
-  serialize(data): string {
-    let [val, str] = ['', ''];
-    for (var v in data) {
-      str = v + "=" + data[v];
-      val += str + '&';
-    }
-    return val.slice(0, val.length - 1);
   }
 
 }
