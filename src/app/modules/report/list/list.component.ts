@@ -66,26 +66,34 @@ export class ListComponent implements OnInit {
   }
   
   query(table) {
-    let params = this.queryForm.value;
-    params.province = params.province.length ? params.province.join(',') : '';
-    params.city = params.city.length ? params.city.join(',') : '';
-    params.area = params.area.length ? params.area.join(',') : '';
+    let params = JSON.parse(JSON.stringify(this.queryForm.value));
+    
+    params.province = params.province.length ? (typeof (params.province) == 'string' ? params.province : params.province.join(',')) : '';
+    params.city = params.city.length ? (typeof (params.city) == 'string' ? params.city : params.city.join(',')) : '';
+    params.area = params.area.length ? (typeof (params.area) == 'string' ? params.area : params.area.join(',')) : '';
     params.createStartTime = params.createTime && params.createTime.length ? this.format.transform(params.createTime[0], 'yyyy-mm-dd') : '';
     params.createEndTime = params.createTime && params.createTime.length ? this.format.transform(params.createTime[1], 'yyyy-mm-dd') : '';
     delete params.createTime;
+    for (let p in params){
+      if (params[p] == "" || params[p] == null){
+        delete params[p];
+      }
+    }
     table.request(params);
   }
 
-  reset() {}
+  reset() {
+    this.queryForm.reset();
+
+  }
 
 
   domain = environment.domain
   export() {
     let params = this.queryForm.value;
-    console.log(params)
-    params.province = params.province.length ? params.province.join(',') : '';
-    params.city = params.city.length ? params.city.join(',') : '';
-    params.area = params.area.length ? params.area.join(',') : '';
+    params.province = params.province.length ? (typeof (params.province) == 'string' ? params.province : params.province.join(',')) : '';
+    params.city = params.city.length ? (typeof (params.city) == 'string' ? params.city : params.city.join(',')) : '';
+    params.area = params.area.length ? (typeof (params.area) == 'string' ? params.area : params.area.join(',')) : '';
     params.createStartTime = params.createTime && params.createTime.length ? this.format.transform(params.createTime[0], 'yyyy-mm-dd') : '';
     params.createEndTime = params.createTime && params.createTime.length ? this.format.transform(params.createTime[1], 'yyyy-mm-dd') : '';
     window.open(`${this.domain}/shopInfo/exportShopInfo?${serialize(params)}`, '_blank')
