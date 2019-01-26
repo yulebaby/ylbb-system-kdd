@@ -49,6 +49,13 @@ export class CustomerComponent implements OnInit {
       optionsUrl  : '/common/selectSpreadRelations',
     },
     {
+      label       : '渠道来源',
+      key         : 'templateId',
+      type        : 'select',
+      optionsUrl  : '/common/selectErpTemplateList',
+      optionKey   : { label: 'templateHeadline', value: 'id' }
+    },
+    {
       label       : '预约日期',
       key         : 'createxxTime',
       type        : 'rangepicker',

@@ -42,22 +42,22 @@ export class CacheService {
    */
   get(key: string, params: object = {}): Observable<any> {
     return new Observable(observer => {
-      let value = window.localStorage.getItem(key);
-      if (value) {
-        try {
-          let [val, desc] = [JSON.parse(value.split('|--cache--|')[0]), JSON.parse(value.split('|--cache--|')[1])];
-          if (desc.version === environment.version) {
-            observer.next(val);
-            observer.complete();
-          } else {
-            this._asyncData(observer, key, params);
-          }
-        } catch (error) {
-          this._asyncData(observer, key, params);
-        }
-      } else {
+      // let value = window.localStorage.getItem(key);
+      // if (value) {
+      //   try {
+      //     let [val, desc] = [JSON.parse(value.split('|--cache--|')[0]), JSON.parse(value.split('|--cache--|')[1])];
+      //     if (desc.version === environment.version) {
+      //       observer.next(val);
+      //       observer.complete();
+      //     } else {
+      //       this._asyncData(observer, key, params);
+      //     }
+      //   } catch (error) {
+      //     this._asyncData(observer, key, params);
+      //   }
+      // } else {
         this._asyncData(observer, key, params);
-      }
+      // }
     })
   }
 
