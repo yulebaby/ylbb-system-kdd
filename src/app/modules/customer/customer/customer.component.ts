@@ -49,7 +49,7 @@ export class CustomerComponent implements OnInit {
       optionsUrl  : '/common/selectSpreadRelations',
     },
     {
-      label       : '渠道来源',
+      label       : '模板',
       key         : 'templateId',
       type        : 'select',
       optionsUrl  : '/common/selectErpTemplateList',
