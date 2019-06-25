@@ -87,7 +87,7 @@ export class CustomerComponent implements OnInit {
     },
   ];
 
-  tableNode = [{ name: '家长电话', width: 100, left: 0 }, '宝宝昵称', '客户来源', '转化数', '省市区', '归属门店', '入库时间', '状态', '预约日期', { name: '操作', width: 100, right: 0}]
+  tableNode = [{ name: '家长电话', width: 100, left: 0 }, '宝宝昵称', '客户来源', '模板来源', '转化数', '省市区', '归属门店', '入库时间', '状态', '预约日期', { name: '操作', width: 100, right: 0}]
 
   constructor(
     private message: NzMessageService,
